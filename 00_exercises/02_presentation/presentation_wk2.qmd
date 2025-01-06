@@ -1,0 +1,183 @@
+---
+title: "Week 2 Exercise 2: Cheese"
+author:
+  - name: "Martijn van Dam"
+    id: jb
+    orcid: 0009-0003-9732-6575
+    email: m.l.g.vandam@uu.nl
+format: revealjs
+logo: cheese-block.png
+bibliography: bibliography.bib
+nocite: "@*"
+---
+
+## Favorite cheese
+
+![Royal Blue Old Cheese from the Goudse Kaasshop](royalblue.png){fig-align="center" width="40%"}
+
+
+
+
+## (Fictive) Price of a kg Royal Blue Cheese in Euros
+<div style="font-size: 50%;">
+```{r}
+library(DT)
+
+# Generate data for years 2006 to 2025
+set.seed(42)
+years <- 2006:2025
+base_price <- 15 
+annual_growth <- 0.05 
+
+# Generate prices with random fluctuation
+prices <- sapply(0:(length(years) - 1), function(i) {
+  round(base_price * ((1 + annual_growth)^i) * runif(1, 0.95, 1.05), 2)
+})
+
+data <- data.frame(
+  Year = years,
+  `Price` = prices
+)
+
+datatable_output <- datatable(data, options = list(pageLength = 5, autoWidth = TRUE), rownames = FALSE)
+
+htmltools::tags$div(
+  style = "overflow-y: auto; max-height: 400px;",
+  datatable_output
+)
+
+```
+
+The package DT was used for the interactive table [@DT]
+
+---
+
+## Interactive Plot of Cheese Prices
+
+```{r}
+library(plotly)
+
+# Create the interactive plot
+fig <- plot_ly(
+  data = data,
+  x = ~Year,
+  y = ~Price,
+  type = 'scatter',
+  mode = 'lines+markers',
+  marker = list(size = 8),
+  line = list(color = 'blue', width = 2)
+) %>%
+  layout(
+    title = "Price of Royal Blue Cheese Over Time",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Price (Euros per kg)"),
+    hovermode = "closest"
+  )
+
+# Render the plot
+fig
+```
+
+Note. the R-code is executed behind the scenes, but not shown. The package `plotly` was used for the plot [@plotly]
+
+## Two columns
+
+:::{.columns}
+::: {.column width="50%"}
+### Pro's of Royal Blue Old
+
+- Delicious
+- Pairs good with red wine
+- Has a cool name
+
+:::
+::: {.column width="50%"}
+### Cons of Royal Blue Old
+- There are none
+
+:::
+:::
+
+## Multi-Row Aligned Equation
+
+\begin{aligned}
+y &= ax^2 + bx + c \\
+  &= (x + 1)^2 + 2x + 3 \\
+  &= x^2 + 2x + 1 + 2x + 3 \\
+  &= x^2 + 4x + 4
+\end{aligned}
+
+
+## R Code for Price Generation
+
+```{r}
+#| eval: FALSE
+#| echo: TRUE
+
+
+# Generate data for years 2006 to 2025
+set.seed(42)
+years <- 2006:2025
+base_price <- 15 
+annual_growth <- 0.05 
+
+# Generate prices with random fluctuation
+prices <- sapply(0:(length(years) - 1), function(i) {
+  round(base_price * ((1 + annual_growth)^i) * runif(1, 0.95, 1.05), 2)
+})
+```
+
+## Cached and Labeled R Code
+
+````markdown
+{r}
+#| cache: TRUE
+#| label: generated-data
+
+# Generate data for years 2006 to 2025
+set.seed(42)
+years <- 2006:2025
+base_price <- 15
+annual_growth <- 0.05
+
+# Generate prices with random fluctuation
+prices <- sapply(0:(length(years) - 1), function(i) {
+  round(base_price * ((1 + annual_growth)^i) * runif(1, 0.95, 1.05), 2)
+})
+````
+
+Note. the code chunk shown is actually being executed behind the scenes. 
+
+```{r}
+#| cache: TRUE
+#| label: generated-data
+
+# Generate data for years 2006 to 2025
+set.seed(42)
+years <- 2006:2025
+base_price <- 15
+annual_growth <- 0.05
+
+# Generate prices with random fluctuation
+prices <- sapply(0:(length(years) - 1), function(i) {
+  round(base_price * ((1 + annual_growth)^i) * runif(1, 0.95, 1.05), 2)
+})
+```
+
+
+## `renv` reproducible environment
+
+Here, we create a reproducible environment with `renv` [@renv].
+
+```{r}
+#| code-line-numbers: true
+#| label: renv-envir
+#| echo: fenced
+
+library(renv)
+renv::init()
+```
+
+## References
+::: {#refs}
+:::
