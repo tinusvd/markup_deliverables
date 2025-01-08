@@ -1,0 +1,63 @@
+---
+title: "My Reproducible Manuscript"
+author: "M.L.G. van Dam"
+format:
+  pdf: default
+bibliography: references.bib
+---
+
+```{r}
+# Load penguins
+library(ggplot2)
+
+```
+
+## Meet Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Meet the penguins
+
+::: {layout-ncol=2}
+The `penguins` data from the [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/) [@horst2022penguins] contains size measurements for `344` penguins from three species observed on three islands in the Palmer Archipelago, Antarctica @r-lang.
+
+![](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png){fig-align="bottom"}
+
+The plot below shows the relationship between flipper and bill lengths of these penguins.
+:::
+
+
+
+## Results
+
+```{r}
+# Read data
+penguins <- read.csv("data/data.csv")
+
+# Plot penguins
+ggplot(penguins, 
+       aes(x = `Flipper.Length..mm.`, y = `Culmen.Length..mm.`)) +
+        geom_point(aes(color = Species, shape = Species)) +
+        scale_color_manual(values = c("darkorange","purple","cyan4")) +
+        labs(
+                title = "Flipper and Culmen length",
+                subtitle = "Dimensions for penguins at Palmer Station LTER",
+                x = "Flipper length (mm)", y = "Culmen length (mm)",
+                color = "Penguin species", shape = "Penguin species"
+        ) +
+        theme_minimal()
+
+```
+
+
+`r 25+25` and another inline code for the number of Chinstrap penguins: `r sum(grepl('Chinstrap', penguins$Species))`, and a simple calculation: `r 1+1`.
+
+
+```{r}
+#| file: "scripts/do_addition.R"
+#| eval: true
+```
+
+```{r}
+do_addition(1,2)
+```
