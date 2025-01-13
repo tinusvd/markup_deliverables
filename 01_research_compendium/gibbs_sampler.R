@@ -51,16 +51,18 @@ combined_gibbs <- function(mu0, sigma0, mu1, sigma1, alpha00, beta00,
   for (i in 1:iter) {
     # Update for the first model: M = b0 + b1*X + e1
     # Intercept of M
-    g0 <- 1 / rgamma(1, shape = 1 / 2, rate = N_M / 2) # Sample auxiliary g for robust estimates
+    # Sample auxiliary g for robust estimates
+    g0 <- 1 / rgamma(1, shape = 1 / 2, rate = N_M / 2)
     post.mu0 <- ((sum(M - b1 * X)) / s1 + mu0 / (g0 * sigma0)) / (N_M / s1 + 1 / (g0 * sigma0))
     post.sigma0 <- 1 / (N_M / s1 + 1 / (g0 * sigma0))
     b0 <- rnorm(1, mean = post.mu0, sd = sqrt(post.sigma0))
     
     # Regression coefficient of X: alpha
-    g1 <- 1 / rgamma(1, shape = 1 / 2, rate = N_M / 2) # Auxiliary variable g for robuster estimates
-    post.mu1 <- ((sum(X * (M - b0))) / s1) / (sum(X^2) / s1 + 1 / (g1 * sigma1)) # Conditional posterior mean
-    post.sigma1 <- 1 / (sum(X^2) / s1 + 1 / (g1 * sigma1)) # Conditional posterior variance
-    b1 <- rnorm(1, mean = post.mu1, sd = sqrt(post.sigma1)) # Sample from conditional distribution
+    # Auxiliary variable g for robuster estimates
+    g1 <- 1 / rgamma(1, shape = 1 / 2, rate = N_M / 2)
+    post.mu1 <- ((sum(X * (M - b0))) / s1) / (sum(X^2) / s1 + 1 / (g1 * sigma1))
+    post.sigma1 <- 1 / (sum(X^2) / s1 + 1 / (g1 * sigma1))
+    b1 <- rnorm(1, mean = post.mu1, sd = sqrt(post.sigma1))
     
     # Error variance of M
     post.alpha0 <- (N_M / 2) + alpha00
@@ -69,18 +71,21 @@ combined_gibbs <- function(mu0, sigma0, mu1, sigma1, alpha00, beta00,
     
     # Update for the second model: Y = b2 + b3*M + b4*X + e2
     # Intercept for Y
+    # Auxiliary variable g for robuster estimates
     g2 <- 1 / rgamma(1, shape = 1 / 2, rate = N_Y / 2)
     post.mu2 <- ((sum(Y - b3 * M - b4 * X)) / s2 + mu2 / (g2 * sigma2)) / (N_Y / s2 + 1 / (g2 * sigma2))
     post.sigma2 <- 1 / (N_Y / s2 + 1 / (g2 * sigma2))
     b2 <- rnorm(1, mean = post.mu2, sd = sqrt(post.sigma2))
     
     # Regression coefficient for M: beta
+    # Auxiliary variable g for robuster estimates
     g3 <- 1 / rgamma(1, shape = 1 / 2, rate = N_Y / 2)
     post.mu3 <- ((sum(M * (Y - b2 - b4 * X))) / s2) / (sum(M^2) / s2 + 1 / (g3 * sigma3))
     post.sigma3 <- 1 / (sum(M^2) / s2 + 1 / (g3 * sigma3))
     b3 <- rnorm(1, mean = post.mu3, sd = sqrt(post.sigma3))
     
     # Regression coefficient for X: tau'
+    # Auxiliary variable g for robuster estimates
     g4 <- 1 / rgamma(1, shape = 1 / 2, rate = N_Y / 2)
     post.mu4 <- ((sum(X * (Y - b2 - b3 * M))) / s2) / (sum(X^2) / s2 + 1 / (g4 * sigma4))
     post.sigma4 <- 1 / (sum(X^2) / s2 + 1 / (g4 * sigma4))
@@ -91,7 +96,7 @@ combined_gibbs <- function(mu0, sigma0, mu1, sigma1, alpha00, beta00,
     post.beta01 <- ((sum((Y - (b2 + b3 * M + b4 * X))^2)) / 2) + beta01
     s2 <- 1 / rgamma(1, shape = post.alpha01, rate = post.beta01)
     
-    # Thinning of 40
+    # Thinning interval of 40 for minimizing of autocorrelation at lags 1-40
     if (i > burnin && (i - burnin) %% thin == 0) {
       vals[sample_index, ] <- c(b0, b1, s1, b2, b3, b4, s2)
       sample_index <- sample_index + 1
