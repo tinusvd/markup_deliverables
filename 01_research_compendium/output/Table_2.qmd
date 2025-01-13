@@ -1,0 +1,38 @@
+---
+title: "Table 2 Report"
+author: "Martijn L.G. van Dam"
+format:
+  pdf: default
+header-includes:
+  - \usepackage{float}
+---
+
+# Libraries
+
+```{r}
+# Load the required package
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+```
+
+# Table
+The table above should be replicated. This table is used in one of my assignments (not uploaded here) for a course in Bayesian Statistics. The column 'Bayesian Estimation' holds the Bayes Factors that are estimated with our own function. The 'Frequentist Estimation' column holds the results of the Bayes Factors estimated with the `bain` package. Please note: this file automatically labels the table as table 1, but it is table 2 in the assignment. 
+```{r}
+#| fig-pos: 'H'
+#| echo: FALSE
+#| results: 'asis'
+# Create the data frame for the Table 
+table_2 <- data.frame(
+  BF = c("BF_alpha (PMP)", "BF_beta (PMP)", "BF_med (PMP)"),
+  Bayesian_Estimation = c("1.99 (0.665)", "2.00 (0.667)", "3.98 (0.799)"),
+  Frequentist_Estimation = c("1.99 (0.665)", "2.00 (0.667)", "3.97(NA)")
+)
+
+# Create the nicely formatted table with kableExtra
+table_2 %>%
+  kbl(caption = "AAFBF using Bayesian and Frequentist approaches.") %>%
+  kable_classic(full_width = F, html_font = "Arial")
+
+```
+
