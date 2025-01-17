@@ -1,6 +1,7 @@
 library(shiny)
 library(restriktor)
 library(Matrix)  # For matrix validation
+library(ggplot2)  # For visualization
 
 # Define the Shiny app
 ui <- fluidPage(
@@ -33,7 +34,11 @@ ui <- fluidPage(
     mainPanel(
       h3("Results"),
       
-      verbatimTextOutput("gorica_results")
+      verbatimTextOutput("gorica_results"),
+      
+      h3("Visualization of GORICA Weights"),
+      
+      plotOutput("gorica_plot")
     )
   )
 )
@@ -192,8 +197,27 @@ server <- function(input, output, session) {
       Heq = input$add_null
     )
     
+    # Extract weights for visualization
+    weights <- data.frame(
+      Hypothesis = rownames(gorica_res$result),
+      Weight = gorica_res$result[, 7]
+    )
+    
+    # Render GORICA weights table
     output$gorica_results <- renderPrint({
       gorica_res
+    })
+    
+    # Render plot of GORICA weights
+    output$gorica_plot <- renderPlot({
+      ggplot(weights, aes(x = Hypothesis, y = Weight, fill = Hypothesis)) +
+        geom_bar(stat = "identity") +
+        geom_text(aes(label = paste0("Bar ", 1:nrow(weights), ": ", Hypothesis)), 
+                  position = position_dodge(width = 0.9), vjust = -0.5, size = 3) +
+        labs(title = "GORICA Weights. The bars are in order of the hypotheses as shown in the results above.", x = "Hypothesis", y = "Weight") +
+        scale_fill_brewer(palette = "Set3") +
+        theme_minimal() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
     })
   })
 }
