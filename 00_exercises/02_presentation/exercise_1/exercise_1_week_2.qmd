@@ -1,0 +1,33 @@
+---
+title: "Week 2 Presentation"
+format: revealjs
+author:
+  - name: "Martijn van Dam"
+    id: jb
+    orcid: 0009-0003-9732-6575
+    email: m.l.g.vandam@uu.nl
+---
+
+## Equation
+
+This is one of my favorite equations:
+
+$$
+logL = c - \frac{N}{2}log|\Sigma_{\omega}| = \frac{N}{2}tr(S\Sigma^{-1}_{\omega})- \frac{N}{2}(m - \mu{\omega})^T\Sigma^{-1}_{\omega}(m - \mu_{\omega})
+$$
+
+-   It is the likelihood function that compares the modeled covariance matrix $\Sigma_{\omega}$ and modeled means $\mu_{\omega}$ to the observed covariance matrix S and observed means m.
+-   It is used in structural equation modeling to minimize the distance between the modeled part and the observed part.
+
+## About me...
+
+- My top 5 most streamed albums of 2024 is:
+  * BRAT by Charli xcx
+  * Charm by Clairo
+  * The Downward Spiral by Nine Inch Nails
+  * Bar Mediterraneo by Nu Genea
+  * God's Favorite Customer by Father John Misty
+
+- I have a mainline Pokémon game of almost every generation (only missing original games of gen 1 and 2)
+
+# The end
