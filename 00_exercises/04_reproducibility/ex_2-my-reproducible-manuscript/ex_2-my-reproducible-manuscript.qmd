@@ -8,9 +8,10 @@ bibliography: references.bib
 
 ## Intro
 
-This documents aims at reproducing the results of a simulation study by @boulesteix, provided by Hanne and Gerko for the Markup languages course. 
+This documents aims at reproducing the results of a simulation study by @boulesteix, provided by Hanne and Gerko for the Markup languages course.
 
 ## Load Libraries:
+
 ```{r message=FALSE, warning=FALSE}
 #| label: libraries
 
@@ -26,7 +27,6 @@ if (any(installed_packages == FALSE)) {
 # Load the packages
 invisible(lapply(packages, library, character.only = TRUE))
 ```
-
 
 ```{r}
 #| label: read and transform data
@@ -121,4 +121,3 @@ FIGURE
 ```{r}
 ggsave(filename = "./results/Figure.tif", plot = last_plot(), device = "tiff")
 ```
-
