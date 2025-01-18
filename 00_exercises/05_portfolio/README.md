@@ -3,4 +3,4 @@
 Deliverables for Markup languages and reproducible programming in statistics (202000010).
 
 Link to my personal website: https://tinusvd.github.io
-
+Link to my public website repository: https://github.com/tinusvd/tinusvd.github.io
